@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.web.core.Mapper.MessageMapper">
+
+	<insert id="AddMessage"  parameterType="com.web.core.Entity.Message" >
+			insert into message(did,mcontent,mtime)
+			value(#{did},#{mcontent},#{mtime})
+	</insert>
+	
+	<select id="listMessageByDid" parameterType="Integer" resultType="message">
+			select * from message where did=#{did}
+	</select>
+	
+</mapper>

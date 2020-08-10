@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.web.core.Mapper.RequirementMapper">
+
+ <select id="listRequirement" resultType="requirement">
+ 		select * from requirement
+ </select>
+
+<insert id="AddRequirement" parameterType="com.web.core.Entity.Requirement">
+		insert into requirement(uid,requireplace,scenicspot,requiredate,requirements)
+		value(#{uid},#{requireplace},#{scenicspot},#{requiredate},#{requirements})
+</insert>
+
+</mapper>

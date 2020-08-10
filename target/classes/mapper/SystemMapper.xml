@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.web.core.Mapper.SystemMapper">
+
+	<!-- 分页查询旅游项目 -->
+	<select id="selectProjectByPage"  parameterType="Integer" resultType="project">
+		select * from project limit #{pageStart},#{pageSize}
+	</select>
+	
+	<select id="selectProjectCount"  resultType="Integer">
+		select count(*) from project
+	</select>
+	
+	<!-- 修改旅游项目 -->
+	<update id="updateProject" parameterType="project" >
+		update project set pname=#{pname},pdescribe=#{pdescribe},pcontent=#{pcontent},pbegin=#{pbegin},
+		pend=#{pend},province=#{province},pimage=#{pimage},pcost=#{pcost} where pid=#{pid}
+	</update>
+	
+	<!-- 删除旅游项目 -->
+	<delete id="deleteProject" parameterType="Integer" >
+		delete from project where pid = #{pid}
+	</delete>
+	
+	<!-- 新增旅游项目 -->
+	<insert id="addProject" parameterType="project">
+		insert into project(pname,pdescribe,pcontent,pbegin,pend,province,pimage,pcost)
+		values(#{pname},#{pdescribe},#{pcontent},#{pbegin},#{pend},#{province},#{pimage},#{pcost})
+	</insert>
+	
+<!-- ====================================================================== -->
+	
+	<!-- 分页查询旅游游记 -->
+	<select id="selectDiaryByPage"  parameterType="Integer" resultType="diary">
+		select * from diary limit #{pageStart},#{pageSize}
+	</select>
+	
+	<select id="selectDiaryCount"  resultType="Integer">
+		select count(*) from diary
+	</select>
+	
+	<!-- 删除旅游游记 -->
+	<delete id="deleteDiary" parameterType="Integer" >
+		delete from diary where did = #{did}
+	</delete>
+
+<!-- ====================================================================== -->
+
+	<!-- 分页查询留言 -->
+	<resultMap type="com.web.core.Entity.Message" id="MessageResult">
+		<id column="messageid" property="messageid"/>
+		<result column="mcontent" property="mcontent"/>
+		<result column="mtime" property="mtime"/>
+		<result column="did" property="did"/>
+		<result column="dname" property="dname"/>
+	</resultMap>
+	<select id="selectMessageByPage"  parameterType="Integer" resultMap="MessageResult">
+		select m.messageid,m.mcontent,m.mtime,m.did,d.dname from message m,diary d where m.did = d.did
+		order by d.did,m.mtime limit #{pageStart},#{pageSize};
+	</select>
+	
+	<select id="selectMessageCount"  resultType="Integer">
+		select count(*) from message
+	</select>
+	
+	<!-- 删除留言 -->
+	<delete id="deleteMessage" parameterType="Integer" >
+		delete from message where messageid = #{messageid}
+	</delete>
+
+<!-- ====================================================================== -->
+
+	<!-- 分页查询线路需求 -->
+	<resultMap type="com.web.core.Entity.Requirement" id="RequirementResult">
+		<id column="requireid" property="requireid"/>
+		<result column="uid" property="uid"/>
+		<result column="requireplace" property="requireplace"/>
+		<result column="scenicspot" property="scenicspot"/>
+		<result column="requiredate" property="requiredate"/>
+		<result column="requirements" property="requirements"/>
+		<result column="name" property="name"/>
+	</resultMap>
+	<select id="selectRequirementByPage"  parameterType="Integer" resultMap="RequirementResult">
+		select r.requireid,r.uid,r.requireplace,r.scenicspot,r.requiredate,r.requirements,u.name
+		from requirement r,user u where r.uid = u.uid order by r.requireid limit #{pageStart},#{pageSize};
+	</select>
+	
+	<select id="selectRequirementCount"  resultType="Integer">
+		select count(*) from requirement
+	</select>
+	
+	<!-- 删除需求 -->
+	<delete id="deleteRequirement" parameterType="Integer" >
+		delete from requirement where requireid = #{requireid}
+	</delete>
+	
+<!-- ====================================================================== -->
+	
+	<!-- 分页查询审核游记 -->
+	<select id="selectCheckDiaryByPage"  parameterType="Integer" resultType="diaryCheck">
+		select * from diarycheck limit #{pageStart},#{pageSize}
+	</select>
+	
+	<select id="selectCheckDiaryCount"  resultType="Integer">
+		select count(*) from diarycheck
+	</select>
+	
+	<!-- 删除审核游记 -->
+	<delete id="deleteCheckDiary" parameterType="Integer" >
+		delete from diarycheck where c_did = #{c_did}
+	</delete>
+	
+	<!-- 修改审核游记状态 -->
+	<insert id="alterCheckDiary" parameterType="diary">
+		<if test="diaryState=='审核通过'">
+		update diarycheck set diaryState=#{diaryState} where c_did=#{c_did};
+		insert into diary(dname,dcontent,dimage,uid,diarytime)
+		values(#{c_dname},#{c_dcontent},#{c_dimage},#{c_uid},#{c_diarytime});
+		</if>
+		<if test="diaryState=='审核不通过'">
+		update diarycheck set diaryState=#{diaryState} where c_did=#{c_did};
+		</if>
+	</insert>
+	
+<!-- ====================================================================== -->
+	
+	<!-- 分页查询旅游项目订单 -->
+	<resultMap type="com.web.core.Entity.Order" id="ProjectOrderResult">
+		<id column="orderid" property="orderid"/>
+		<result column="uid" property="uid"/>
+		<result column="name" property="name"/>
+		<result column="phone" property="phone"/>
+		<result column="pid" property="pid"/>
+		<result column="pname" property="pname"/>
+		<result column="travelTime" property="travelTime"/>
+		<result column="orderTime" property="orderTime"/>
+		<result column="cost" property="cost"/>
+		<result column="orderState" property="orderState"/>
+	</resultMap>
+	<select id="showProjectOrderByPage"  parameterType="Integer" resultMap="ProjectOrderResult">
+		select c.orderid,c.uid,c.pid,c.cost,c.travelTime,c.orderTime,c.orderState, a.name,a.phone, b.pname
+		from user a,project b,orders c 
+		where a.uid=c.uid
+		and b.pid=c.pid limit #{pageStart},#{pageSize};
+	</select>
+
+	<select id="selectProjectOrderCount"  resultType="Integer">
+		select count(*) from orders;
+	</select>
+	
+	<!-- 修改旅游订单状态 -->
+	<update id="alterProjectOrder" parameterType="order" >
+		update orders set orderState = #{orderState} where orderid =#{orderid};
+	</update>
+
+<!-- ====================================================================== -->
+	
+	<!-- 分页查询酒店信息 -->
+	<select id="selectHotelByPage"  parameterType="Integer" resultType="hotel">
+		select * from hotel limit #{pageStart},#{pageSize};
+	</select>
+	
+	<select id="selectHotelCount"  resultType="Integer">
+		select count(*) from hotel;
+	</select>
+	
+	<!-- 新增酒店 -->
+	<insert id="AddHotel" parameterType="hotel">
+		insert into hotel(hotelName,hotelAddress,room,price,introduce,hotelImage)
+		values(#{hotelName},#{hotelAddress},#{room},#{price},#{introduce},#{hotelImage});
+	</insert>
+	
+	<!-- 修改酒店信息 -->
+	<update id="UpdateHotel" parameterType="hotel" >
+		update hotel set hotelName=#{hotelName},hotelAddress=#{hotelAddress},room=#{room},introduce=#{introduce},
+		hotelImage=#{hotelImage},price=#{price} where hid=#{hid};
+	</update>
+	
+	<!-- 删除酒店 -->
+	<delete id="DeleteHotel" parameterType="Integer" >
+		delete from hotel where hid = #{hid};
+	</delete>
+	
+<!-- ====================================================================== -->
+
+	<!-- 分页查询酒店订单 -->
+	<resultMap type="com.web.core.Entity.HotelOrder" id="hotelOrderResult">
+		<id column="horderid" property="horderid"/>
+		<result column="hid" property="hid"/>
+		<result column="hotelName" property="hotelName"/>
+		<result column="uid" property="uid"/>
+		<result column="name" property="name"/>
+		<result column="phone" property="phone"/>
+		<result column="travelTime" property="travelTime"/>
+		<result column="orderTime" property="orderTime"/>
+		<result column="room" property="room"/>
+		<result column="days" property="days"/>
+		<result column="price" property="price"/>
+		<result column="orderState" property="orderState"/>
+	</resultMap>
+	<select id="showHotelOrderByPage"  parameterType="Integer" resultMap="hotelOrderResult">
+		select c.horderid,c.hid,c.hotelName,c.uid,c.price,c.travelTime,c.orderTime,c.room,c.days,c.orderState, a.name,a.phone
+		from user a,hotel b,hotelorders c 
+		where a.uid=c.uid
+		and b.hid=c.hid limit #{pageStart},#{pageSize};
+	</select>
+
+	<select id="selectHotelOrderCount"  resultType="Integer">
+		select count(*) from hotelorders;
+	</select>
+	
+	<!-- 修改酒店订单状态 -->
+	<update id="alterHotelOrder" parameterType="hotelOrder" >
+		update hotelorders set orderState = #{orderState} where horderid =#{horderid};
+	</update>
+	
+<!-- ====================================================================== -->
+
+	<!-- 分页查询用户信息 -->
+	<select id="showUserInfoByPage"  parameterType="Integer" resultType="user">
+		select uid,username,sex,phone,name,address,signature from user limit #{pageStart},#{pageSize};
+	</select>
+	
+	<select id="selectUserCount"  resultType="Integer">
+		select count(*) from user;
+	</select>
+	
+	<!-- 注销用户 -->
+	<delete id="DeleteUser" parameterType="Integer" >
+		delete from user where uid = #{uid};
+	</delete>
+
+</mapper>

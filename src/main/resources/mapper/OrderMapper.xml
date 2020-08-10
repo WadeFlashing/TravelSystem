@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.web.core.Mapper.OrderMapper">
+
+	<!-- 购买旅游项目 -->
+	<insert id="buyProject"  parameterType="com.web.core.Entity.Order" >
+			insert into orders(uid,pid,cost,orderTime,travelTime) 
+			value(#{uid},#{pid},#{cost},#{orderTime},#{travelTime});
+	</insert>
+	
+	<!-- 预订酒店 -->
+	<insert id="bookHotel"  parameterType="com.web.core.Entity.HotelOrder" >
+			insert into hotelorders(hid,hotelName,uid,price,travelTime,orderTime,room,days) 
+			value(#{hid},#{hotelName},#{uid},#{price},#{travelTime},#{orderTime},#{room},#{days});
+	</insert>
+	
+</mapper>

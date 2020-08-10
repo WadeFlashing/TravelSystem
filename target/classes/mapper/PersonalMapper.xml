@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.web.core.Mapper.PersonalMapper">
+	
+	<!-- 列出我的游记 -->
+	<select id="listMyDiary" parameterType="Integer" resultType="diary">
+		select * from diary where uid = #{uid};
+	</select>
+	
+	<!-- 重置密码 -->
+	<update id="resetPassword" parameterType="user" >
+		update user set password=#{newpassword} where uid = #{uid} and password=#{oldpassword};
+	</update>
+	
+	<!-- 发表游记到后台审核 -->
+	<insert id="AddDiaryCheck" parameterType="com.web.core.Entity.DiaryCheck">
+        insert into diarycheck(c_dname,c_dcontent,c_dimage,c_diarytime,c_uid)
+        values(#{c_dname},#{c_dcontent},#{c_dimage},#{c_diarytime},#{c_uid});
+    </insert>
+	
+	<!-- 发布旅游游记 -->
+	<insert id="AddDiary" parameterType="com.web.core.Entity.Diary">
+        insert into diary(dname,dcontent,dimage,diarytime,uid)
+        values(#{dname},#{dcontent},#{dimage},#{diarytime},#{uid});
+    </insert>
+    
+    <!-- 统计待审核的游记 -->
+    <select id="countDiary" parameterType="Integer" resultType="Integer">
+		select count(*) from diarycheck where c_uid = #{c_uid} and diaryState = '待审核';
+	</select>
+    
+    <!-- 统计审核不通过的游记 -->
+    <select id="countDisableDiary" parameterType="Integer" resultType="Integer">
+		select count(*) from diarycheck where c_uid = #{c_uid} and diaryState = '审核不通过';
+	</select>
+    
+    <!-- 查看个人信息 -->
+    <select id="ListInformation" parameterType="Integer" resultType="user">
+		select * from user where uid = #{uid};
+	</select>
+    
+    <!-- 修改个人信息 -->
+    <update id="updatePersonal" parameterType="user" >
+    	update user set name=#{name},sex=#{sex},phone=#{phone},address=#{address},signature=#{signature}
+    	where uid = #{uid};
+    </update>
+    
+   <!--  查看个人旅游订单 -->
+   <select id="ListTravelOrder" parameterType="Integer" resultType="order">
+		select a.travelTime,a.orderTime,a.cost,a.orderState,b.pname
+		from orders a,project b where a.pid = b.pid and a.uid =#{uid};
+	</select>
+	
+	<!--  查看个人酒店订单 -->
+   <select id="ListHotelOrder" parameterType="Integer" resultType="hotelorder">
+		select a.hotelName,a.room,a.days,a.travelTime,a.orderTime,a.price,a.orderState,b.hotelAddress
+		from hotelorders a,hotel b where a.hid = b.hid and a.uid =#{uid};
+	</select>
+	
+</mapper>

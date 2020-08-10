@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.web.core.Mapper.ProjectMapper">
+
+	<select id="findProject"  parameterType="String"  resultType="project">
+		select * from project where pname=#{projectname}
+	</select>
+
+	<select id="listProject"  resultType="project">
+		select * from project
+	</select>
+	
+	<select id="searchProjectByProvince" parameterType="String" resultType="project">
+		select * from project where province =#{province}
+	</select>
+	
+	<select id="searchProjectByName" parameterType="String" resultType="project">
+		select * from project where pname like "%"#{placename}"%"
+	</select>
+	
+</mapper>

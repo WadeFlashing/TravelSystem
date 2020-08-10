@@ -1,0 +1,8 @@
+系统网站的首页：http://localhost:8080/TravelSystem/index
+管理员登录页面在登录页面里的管理员登入，也可以直接访问 http://localhost:8080/TravelSystem/manage.jsp
+
+数据库连接：
+jdbc.driver=com.mysql.cj.jdbc.Driver
+jdbc.url=jdbc:mysql://127.0.0.1:3306/travel?useSSL=false&serverTimezone=UTC&allowMultiQueries=true
+jdbc.username=root
+jdbc.password=vbg456789

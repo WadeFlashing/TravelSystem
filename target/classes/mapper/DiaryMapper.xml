@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.web.core.Mapper.DiaryMapper">
+
+	<select id="listDiary" resultType="diary">
+		select * from diary
+	</select>
+
+	<select id="findDiaryByname"  parameterType="String" resultType="diary">
+		select * from diary where dname=#{dname}
+	</select>
+	
+	<!-- 根据作者ID查出作者信息 -->
+	<select id="listUserMessage"  parameterType="Integer" resultType="user">
+		select * from user where uid =#{uid};
+	</select>
+	
+</mapper>

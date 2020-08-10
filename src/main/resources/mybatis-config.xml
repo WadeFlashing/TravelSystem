@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<typeAliases>
+		<package name="com.web.core.Entity"/>
+	</typeAliases>
+	
+	<mappers>
+		<mapper resource="mapper/UserMapper.xml"/>
+		<mapper resource="mapper/ProjectMapper.xml"/>
+		<mapper resource="mapper/DiaryMapper.xml"/>
+		<mapper resource="mapper/MessageMapper.xml"/>
+		<mapper resource="mapper/RequirementMapper.xml"/>
+		<mapper resource="mapper/AdministratorMapper.xml"/>
+		<mapper resource="mapper/Tree_menuMapper.xml"/>
+		<mapper resource="mapper/PersonalMapper.xml"/>
+		<mapper resource="mapper/SystemMapper.xml"/>
+		<mapper resource="mapper/OrderMapper.xml"/>
+		<mapper resource="mapper/HotelMapper.xml"/>
+	</mappers>
+	
+</configuration>
